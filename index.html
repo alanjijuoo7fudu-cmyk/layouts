@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap 5 Layout Patterns</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        /* Custom CSS for smooth scrolling and minimal color theme */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        :root {
+            --primary-dark: #1a1a1a;
+            --secondary-gray: #f8f9fa;
+            --accent-color: #6c757d;
+            --text-muted: #6c757d;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+        
+        .minimal-dark {
+            background-color: var(--primary-dark);
+        }
+        
+        .minimal-light {
+            background-color: var(--secondary-gray);
+        }
+        
+        .section-padding {
+            padding: 80px 0;
+        }
+        
+        .hero-section {
+            min-height: 100vh;
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+        }
+        
+        .diagonal-image {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Glassy button styles - Fully Curvy */
+        .btn-glass {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 50px !important;
+            padding: 12px 30px;
+        }
+
+        .btn-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+            border-radius: 50px;
+        }
+
+        .btn-glass:hover::before {
+            left: 100%;
+        }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn-glass-dark {
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--primary-dark);
+            transition: all 0.3s ease;
+            border-radius: 50px !important;
+            padding: 12px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-glass-dark::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+            transition: left 0.5s ease;
+            border-radius: 50px;
+        }
+
+        .btn-glass-dark:hover::before {
+            left: 100%;
+        }
+
+        .btn-glass-dark:hover {
+            background: rgba(0, 0, 0, 0.2);
+            border-color: rgba(0, 0, 0, 0.3);
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        /* Card hover effects */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        /* Smooth navigation highlight */
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark minimal-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                Layout Patterns
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#center-stage">Center Stage</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#grid-equals">Grid of Equals</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#module-tabs">Module Tabs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#accordion">Accordion</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#collapsible">Collapsible</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#diagonal">Diagonal Balance</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#liquid">Liquid Layout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. Center Stage Layout -->
+    <section id="center-stage" class="hero-section d-flex justify-content-center align-items-center minimal-dark text-white">
+        <div class="text-center">
+            <h1 class="display-2 fw-bold mb-4">1. Center Stage Layout</h1>
+            <p class="lead mb-4">This is demonstration of Center Stage Layout</p>
+            <button class="btn btn-glass btn-lg px-5 py-3" onclick="document.getElementById('grid-equals').scrollIntoView({behavior: 'smooth'})">
+                 Next Layout
+            </button>
+        </div>
+    </section>
+
+    <!-- 2. Grid of Equals -->
+    <section id="grid-equals" class="section-padding minimal-light">
+        <div class="container">
+            <h2 class="text-center mb-5 display-4 text-dark">2. Grid of Equals</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <div class="text-center mb-3">
+                                <i class="bi bi-gear-fill fs-1 text-dark"></i>
+                            </div>
+                            <h5 class="card-title text-center">Web Development</h5>
+                            <p class="card-text flex-grow-1 text-muted">Modern responsive websites using the latest technologies and frameworks.</p>
+                            <button class="btn btn-glass-dark mt-auto">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <div class="text-center mb-3">
+                                <i class="bi bi-phone-fill fs-1 text-dark"></i>
+                            </div>
+                            <h5 class="card-title text-center">Mobile Apps</h5>
+                            <p class="card-text flex-grow-1 text-muted">Cross-platform mobile applications with native performance and user experience.</p>
+                            <button class="btn btn-glass-dark mt-auto">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <div class="text-center mb-3">
+                                <i class="bi bi-palette-fill fs-1 text-dark"></i>
+                            </div>
+                            <h5 class="card-title text-center">UI/UX Design</h5>
+                            <p class="card-text flex-grow-1 text-muted">Beautiful and intuitive user interfaces that enhance user engagement.</p>
+                            <button class="btn btn-glass-dark mt-auto">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <div class="text-center mb-3">
+                                <i class="bi bi-lock-fill fs-1 text-dark"></i>
+                                
+                            </div>
+                            <h5 class="card-title text-center">Cybersecurity</h5>
+                            <p class="card-text flex-grow-1 text-muted">Comprehensive security solutions to protect your digital assets.</p>
+                            <button class="btn btn-glass-dark mt-auto">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Module Tabs -->
+    <section id="module-tabs" class="section-padding">
+        <div class="container">
+            <h2 class="text-center mb-5 display-4">3. Module Tabs</h2>
+            <ul class="nav nav-tabs justify-content-center mb-4" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button">
+                        <i class="bi bi-info-circle"></i> About Us
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#services" type="button">
+                        <i class="bi bi-tools"></i> Services
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button">
+                        <i class="bi bi-envelope"></i> Contact
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="about">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-5">
+                                    <h4 class="mb-4">About Our Company</h4>
+                                    <p class="text-muted">We are a cutting-edge technology company specializing in innovative web solutions. Our team combines creativity with technical expertise to deliver exceptional digital experiences.</p>
+                                    <p class="text-muted">Founded in 2020, we have successfully completed over 200 projects for clients worldwide, ranging from startups to Fortune 500 companies.</p>
+                                    <div class="row mt-4">
+                                        <div class="col-md-4 text-center">
+                                            <h3 class="text-dark">200+</h3>
+                                            <p class="text-muted">Projects Completed</p>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <h3 class="text-dark">50+</h3>
+                                            <p class="text-muted">Happy Clients</p>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <h3 class="text-dark">5+</h3>
+                                            <p class="text-muted">Years Experience</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-pane fade" id="services">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-5">
+                                    <h4 class="mb-4">Our Services</h4>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-check-circle-fill text-dark me-3 fs-5"></i>
+                                                <span>Responsive Web Design</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-check-circle-fill text-dark me-3 fs-5"></i>
+                                                <span>E-commerce Development</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-check-circle-fill text-dark me-3 fs-5"></i>
+                                                <span>Mobile App Development</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-check-circle-fill text-dark me-3 fs-5"></i>
+                                                <span>SEO Optimization</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-pane fade" id="contact">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-5">
+                                    <h4 class="mb-4">Get In Touch</h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-4">
+                                                <i class="bi bi-geo-alt-fill text-dark me-2"></i>
+                                                <strong>Address:</strong><br>
+                                                <span class="text-muted">123 Tech Street, Digital City<br>
+                                                Scotland, UK 12345</span>
+                                            </div>
+                                            <div class="mb-4">
+                                                <i class="bi bi-telephone-fill text-dark me-2"></i>
+                                                <strong>Phone:</strong><br>
+                                                <span class="text-muted">+44 123 456 7890</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-4">
+                                                <i class="bi bi-envelope-fill text-dark me-2"></i>
+                                                <strong>Email:</strong><br>
+                                                <span class="text-muted">hello@company.com</span>
+                                            </div>
+                                            <div class="mb-4">
+                                                <i class="bi bi-clock-fill text-dark me-2"></i>
+                                                <strong>Hours:</strong><br>
+                                                <span class="text-muted">Mon - Fri: 9:00 AM - 6:00 PM</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Accordion -->
+    <section id="accordion" class="section-padding minimal-light">
+        <div class="container">
+            <h2 class="text-center mb-5 display-4">4. FAQ Accordion</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item border-0 shadow-sm mb-3">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                    <i class="bi bi-question-circle me-2"></i>
+                                    What technologies do you use for web development?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    We use modern technologies including HTML5, CSS3, JavaScript, Bootstrap 5, React, Node.js, and various other frameworks depending on project requirements. Our tech stack is constantly evolving to incorporate the latest industry standards.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item border-0 shadow-sm mb-3">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                    <i class="bi bi-clock me-2"></i>
+                                    How long does a typical project take?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Project timelines vary based on complexity and scope. A simple website typically takes 2-4 weeks, while complex web applications can take 2-6 months. We provide detailed timelines during the planning phase and keep you updated throughout the development process.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item border-0 shadow-sm mb-3">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                    <i class="bi bi-currency-dollar me-2"></i>
+                                    What are your pricing models?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    We offer flexible pricing models including fixed-price projects, hourly rates, and retainer agreements. Pricing depends on project complexity, timeline, and specific requirements. Contact us for a free consultation and detailed quote tailored to your needs.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item border-0 shadow-sm">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                                    <i class="bi bi-headset me-2"></i>
+                                    Do you provide ongoing support and maintenance?
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Yes, we offer comprehensive support and maintenance packages. This includes regular updates, security patches, performance optimization, and technical support. We believe in long-term partnerships with our clients to ensure their digital success.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Collapsible Panels -->
+    <section id="collapsible" class="section-padding">
+        <div class="container">
+            <h2 class="text-center mb-5 display-4">5. Collapsible Sidebar Menu</h2>
+            <div class="row">
+                <div class="col-lg-3 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header minimal-dark text-white border-0">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link text-white text-decoration-none w-100 text-start" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                                    <i class="bi bi-list"></i> Navigation Menu
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="sidebarMenu" class="collapse show">
+                            <div class="list-group list-group-flush">
+                                <a href="#" class="list-group-item list-group-item-action border-0">
+                                    <i class="bi bi-house-door me-2"></i> Home
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action border-0">
+                                    <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action border-0">
+                                    <i class="bi bi-gear me-2"></i> Settings
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action border-0">
+                                    <i class="bi bi-person me-2"></i> Profile
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action border-0">
+                                    <i class="bi bi-box-arrow-right me-2"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body">
+                            <h4 class="card-title">Main Content Area</h4>
+                            <p class="card-text text-muted">This demonstrates a collapsible sidebar menu pattern commonly used in dashboard layouts. The sidebar can be toggled to show or hide navigation options, making efficient use of screen space especially on mobile devices.</p>
+                            <p class="text-muted">Click the "Navigation Menu" header to collapse or expand the sidebar. This pattern is perfect for:</p>
+                            <ul class="text-muted">
+                                <li>Admin dashboards</li>
+                                <li>User control panels</li>
+                                <li>Application interfaces</li>
+                                <li>Content management systems</li>
+                            </ul>
+                            <div class="mt-4 p-4 bg-light rounded">
+                                <h5>Benefits of Collapsible Navigation:</h5>
+                                <ul class="mb-0 text-muted">
+                                    <li>Saves screen real estate</li>
+                                    <li>Improves mobile experience</li>
+                                    <li>Reduces visual clutter</li>
+                                    <li>Maintains easy access to navigation</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Diagonal Balance Layout -->
+    <section id="diagonal" class="section-padding minimal-light">
+        <div class="container">
+            <h2 class="text-center mb-5 display-4">6. Diagonal Balance Layout</h2>
+            <div class="row align-items-center min-vh-50">
+                <div class="col-lg-6">
+                    <img src="https://via.placeholder.com/500x400/6c757d/FFFFFF?text=Minimal+Design" 
+                         alt="Diagonal Balance Demo" 
+                         class="img-fluid diagonal-image">
+                </div>
+                <div class="col-lg-6 mt-auto">
+                    <div class="text-end">
+                        <h3 class="display-5 fw-bold mb-4">Elegant Design Balance</h3>
+                        <p class="lead mb-4 text-muted">This layout creates visual harmony through diagonal balance, where elements are positioned to create an invisible diagonal line that guides the eye naturally across the content.</p>
+                        <p class="text-muted">The image anchors the top-left corner while the text content balances from the bottom-right, creating dynamic visual tension that engages users and draws attention to key information.</p>
+                        <div class="mt-4">
+                            <button class="btn btn-glass-dark btn-lg">
+                                Explore More <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Liquid Layout Footer -->
+    <footer id="liquid" class="minimal-dark text-white">
+        <div class="container-fluid py-5">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>7. Liquid Layout</h5>
+                    <p class="text-white-50">Demonstrating the power and flexibility of Bootstrap 5 layout patterns for modern web development.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-3"><i class="bi bi-facebook fs-4"></i></a>
+                        <a href="#" class="text-white me-3"><i class="bi bi-twitter fs-4"></i></a>
+                        <a href="#" class="text-white me-3"><i class="bi bi-linkedin fs-4"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-github fs-4"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#center-stage" class="text-white-50 text-decoration-none">Center Stage</a></li>
+                        <li class="mb-2"><a href="#grid-equals" class="text-white-50 text-decoration-none">Grid of Equals</a></li>
+                        <li class="mb-2"><a href="#module-tabs" class="text-white-50 text-decoration-none">Module Tabs</a></li>
+                        <li class="mb-2"><a href="#accordion" class="text-white-50 text-decoration-none">Accordion</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Layout Patterns</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#collapsible" class="text-white-50 text-decoration-none">Collapsible</a></li>
+                        <li class="mb-2"><a href="#diagonal" class="text-white-50 text-decoration-none">Diagonal Balance</a></li>
+                        <li class="mb-2"><a href="#liquid" class="text-white-50 text-decoration-none">Liquid Layout</a></li>
+                        <li class="mb-2"><a href="#home" class="text-white-50 text-decoration-none">Back to Top</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>Contact Info</h5>
+                    <p class="mb-2 text-white-50"><i class="bi bi-geo-alt me-2"></i> Glasgow, Scotland</p>
+                    <p class="mb-2 text-white-50"><i class="bi bi-envelope me-2"></i> hello@layoutpatterns.com</p>
+                    <p class="mb-0 text-white-50"><i class="bi bi-phone me-2"></i> +44 123 456 7890</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Add smooth scrolling behavior for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 70; // Account for fixed navbar
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Update active navigation item on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
